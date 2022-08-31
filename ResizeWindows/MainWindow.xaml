@@ -1,0 +1,99 @@
+﻿<Window
+    x:Class="ResizeWindows.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:kz="urn:kzrnm-wpf/controls"
+    xmlns:local="clr-namespace:ResizeWindows"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="clr-namespace:ResizeWindows.Mvvm"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:vm="clr-namespace:ResizeWindows.ViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
+    Title="ResizeWindows"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <b:Interaction.Triggers>
+        <b:KeyTrigger Modifiers="Ctrl" Key="Q">
+            <b:CallMethodAction MethodName="Close" />
+        </b:KeyTrigger>
+        <b:EventTrigger EventName="Loaded">
+            <b:CallMethodAction MethodName="Loaded" TargetObject="{Binding}" />
+        </b:EventTrigger>
+        <b:EventTrigger EventName="Closed">
+            <b:CallMethodAction MethodName="Closed" TargetObject="{Binding}" />
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    <Grid x:Name="LayoutRoot" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ListView
+            Grid.Row="0"
+            ItemsSource="{Binding WindowProcesses}"
+            SelectedItem="{Binding SelectedItem}">
+            <ListView.Resources>
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                </Style>
+            </ListView.Resources>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+                        Width="120"
+                        DisplayMemberBinding="{Binding ProcessName}"
+                        Header="Process" />
+                    <GridViewColumn
+                        Width="500"
+                        DisplayMemberBinding="{Binding WindowName}"
+                        Header="Window" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid
+            Background="WhiteSmoke"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <b:Interaction.Triggers>
+                <b:DataTrigger Binding="{Binding RemainingForFinish}" Comparison="LessThan" Value="0">
+                    <b:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                </b:DataTrigger>
+                <b:DataTrigger Binding="{Binding RemainingForFinish}" Comparison="GreaterThanOrEqual" Value="0">
+                    <b:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                </b:DataTrigger>
+            </b:Interaction.Triggers>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="{Binding RemainingForFinish}"/>
+                <TextBlock Text="秒後に終了します" />
+                <Button Content="キャンセル" Padding="20 0" Command="{Binding StopTimerCommand}" />
+            </StackPanel>
+        </Grid>
+        <DockPanel Grid.Row="1" Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding UpdateWindowProcessesCommand}" Content="Refresh" />
+                <Canvas Width="10" />
+                <ComboBox ItemsSource="{Binding Presets}" SelectedItem="{Binding Preset}" DisplayMemberPath="Name" />
+            </StackPanel>
+            <StackPanel
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                Orientation="Horizontal">
+                <TextBlock Text="Height:" />
+                <TextBox
+                    Width="50"
+                    kz:TextBoxBehavior.SelectAllOnFocus="True"
+                    Text="{Binding Height}" />
+                <Canvas Width="10" />
+                <TextBlock Text="Width:" />
+                <TextBox
+                    Width="50"
+                    kz:TextBoxBehavior.SelectAllOnFocus="True"
+                    Text="{Binding Width}" />
+                <Canvas Width="10" />
+                <Button Command="{Binding ApplySizeCommand}" Content="Apply" />
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

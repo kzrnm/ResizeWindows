@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<Nullable>enable</Nullable>
+		
+		<!-- https://icon-rainbow.com/%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%E3%82%B5%E3%82%A4%E3%82%BA%E3%81%AE%E6%8B%A1%E5%A4%A7%EF%BC%88%E5%85%A8%E7%94%BB%E9%9D%A2%EF%BC%89%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3-2/ -->
+		<ApplicationIcon>app.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="KzWpfControl" Version="0.1.0" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.10-beta">
+			<PrivateAssets>all</PrivateAssets>
+			<!--
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			-->
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Config.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>

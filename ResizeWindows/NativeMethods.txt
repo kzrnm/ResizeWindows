@@ -1,0 +1,9 @@
+﻿EnumWindows
+IsWindow
+IsWindowVisible
+SetWinEventHook
+SetWindowPos
+GetWindowTextLength
+GetWindowText
+GetWindowRect
+MoveWindow
